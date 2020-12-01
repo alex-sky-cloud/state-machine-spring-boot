@@ -15,15 +15,18 @@ import state.machine.logging.LoggingMachineListener;
 import java.util.EnumSet;
 
 @Configuration
-public class MachineConfigurationCustom extends EnumStateMachineConfigurerAdapter<BookStates, BookEvents> {
+public class MachineConfigurationCustom
+        extends EnumStateMachineConfigurerAdapter<BookStates, BookEvents> {
 
     @Bean
-    public StateMachine<BookStates, BookEvents> stateMachine(StateMachineListener<BookStates, BookEvents> listener) throws Exception {
+    public StateMachine<BookStates, BookEvents>
+    stateMachine(StateMachineListener<BookStates, BookEvents> listener)
+            throws Exception {
 
         StateMachineBuilder.Builder<BookStates, BookEvents>  builder =
                 StateMachineBuilder.builder();
 
-        builder.configureStates()
+      /*  builder.configureStates()
                 .withStates()
                 .initial(BookStates.AVAILABLE)
                 .states(EnumSet.allOf(BookStates.class));
@@ -49,10 +52,38 @@ public class MachineConfigurationCustom extends EnumStateMachineConfigurerAdapte
                 .target(BookStates.AVAILABLE)
                 .event(BookEvents.END_REPAIR);
 
+ */
         StateMachine<BookStates, BookEvents> stateMachine = builder.build();
         stateMachine.addStateListener(listener);
         return stateMachine;
     }
+
+    @Override
+    public void configure(StateMachineTransitionConfigurer<BookStates, BookEvents> transitions)
+            throws Exception {
+        transitions
+                .withExternal()
+                .source(BookStates.AVAILABLE)
+                .target(BookStates.BORROWED)
+                .event(BookEvents.BORROW)
+                .and()
+                .withExternal()
+                .source(BookStates.BORROWED)
+                .target(BookStates.AVAILABLE)
+                .event(BookEvents.RETURN)
+                .and()
+                .withExternal()
+                .source(BookStates.AVAILABLE)
+                .target(BookStates.IN_REPAIR)
+                .event(BookEvents.START_REPAIR)
+                .and()
+                .withExternal()
+                .source(BookStates.IN_REPAIR)
+                .target(BookStates.AVAILABLE)
+                .event(BookEvents.END_REPAIR);
+    }
+
+
 
     @Override
     public void configure(StateMachineConfigurationConfigurer<BookStates, BookEvents> config) throws Exception {
