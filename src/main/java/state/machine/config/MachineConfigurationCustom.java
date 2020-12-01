@@ -55,6 +55,16 @@ public class MachineConfigurationCustom
         return stateMachine;
     }
 
+    @Override
+    public void configure(StateMachineConfigurationConfigurer<BookStates, BookEvents> config)
+            throws Exception {
+        config.withConfiguration()
+                .autoStartup(true);
+    }
+
+}
+
+
   /*  @Override
     public void configure(StateMachineTransitionConfigurer<BookStates, BookEvents> transitions)
             throws Exception {
@@ -81,12 +91,3 @@ public class MachineConfigurationCustom
     }
 
 */
-
-    @Override
-    public void configure(StateMachineConfigurationConfigurer<BookStates, BookEvents> config)
-            throws Exception {
-        config.withConfiguration()
-                .autoStartup(true);
-    }
-
-}
