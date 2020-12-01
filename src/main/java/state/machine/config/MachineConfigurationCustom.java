@@ -6,11 +6,9 @@ import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.config.EnumStateMachineConfigurerAdapter;
 import org.springframework.statemachine.config.StateMachineBuilder;
 import org.springframework.statemachine.config.builders.StateMachineConfigurationConfigurer;
-import org.springframework.statemachine.config.builders.StateMachineTransitionConfigurer;
 import org.springframework.statemachine.listener.StateMachineListener;
 import state.machine.enums.BookEvents;
 import state.machine.enums.BookStates;
-import state.machine.logging.LoggingMachineListener;
 
 import java.util.EnumSet;
 
@@ -23,10 +21,10 @@ public class MachineConfigurationCustom
     stateMachine(StateMachineListener<BookStates, BookEvents> listener)
             throws Exception {
 
-        StateMachineBuilder.Builder<BookStates, BookEvents>  builder =
+        StateMachineBuilder.Builder<BookStates, BookEvents> builder =
                 StateMachineBuilder.builder();
 
-      /*  builder.configureStates()
+        builder.configureStates()
                 .withStates()
                 .initial(BookStates.AVAILABLE)
                 .states(EnumSet.allOf(BookStates.class));
@@ -52,13 +50,12 @@ public class MachineConfigurationCustom
                 .target(BookStates.AVAILABLE)
                 .event(BookEvents.END_REPAIR);
 
- */
         StateMachine<BookStates, BookEvents> stateMachine = builder.build();
         stateMachine.addStateListener(listener);
         return stateMachine;
     }
 
-    @Override
+  /*  @Override
     public void configure(StateMachineTransitionConfigurer<BookStates, BookEvents> transitions)
             throws Exception {
         transitions
@@ -83,13 +80,13 @@ public class MachineConfigurationCustom
                 .event(BookEvents.END_REPAIR);
     }
 
-
+*/
 
     @Override
-    public void configure(StateMachineConfigurationConfigurer<BookStates, BookEvents> config) throws Exception {
+    public void configure(StateMachineConfigurationConfigurer<BookStates, BookEvents> config)
+            throws Exception {
         config.withConfiguration()
-                .autoStartup(true)
-                .listener(new LoggingMachineListener());
+                .autoStartup(true);
     }
 
 }
