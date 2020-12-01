@@ -8,7 +8,8 @@ import state.machine.enums.BookEvents;
 import state.machine.enums.BookStates;
 
 public class LoggingUtils {
-    public static final Logger LOGGER = LoggerFactory.getLogger("STATE MACHINE");
+    public static final Logger LOGGER =
+            LoggerFactory.getLogger("STATE MACHINE");
 
     public static String getStateInfo(State<BookStates, BookEvents> state) {
         return state != null ? state.getId().name() : "EMPTY STATE";
